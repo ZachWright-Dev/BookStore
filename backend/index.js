@@ -57,13 +57,31 @@ app.get('/books/:id', async(req, res, next) => {
     }
 })
 
+//Update a book
 app.put('/books/:id', validateBook, async(req,res,next) => {
     const { id } = req.params
     const { title, author, publishYear } = req.body
     try{
         const book = await Book.findByIdAndUpdate(id,{title, author, publishYear}, {new: true} )
+        if (!book){
+            return res.status(400).send("Book not found!")
+        }
         return res.status(200).json(book)
     } catch(e){
+        next(e)
+    }
+})
+
+//Delete a book
+app.delete('/books/:id', async(req, res, next) => {
+    const { id } = req.params
+    try{
+        const result = await  Book.findByIdAndDelete(id)
+        if (!result){
+            return res.status(400).send("Book not found!")
+        }
+        return res.status(200).json({message: "Book deleted successfully!"})
+    } catch(e) {
         next(e)
     }
 })
