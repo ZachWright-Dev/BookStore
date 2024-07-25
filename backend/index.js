@@ -7,10 +7,10 @@ import booksRouter from './routes/bookRoutes.js';
 
 //Initialize app
 const app = express()
+app.use(cors())
 app.use(express.json())
 app.use('/books', booksRouter)
 app.use(errorHandler)
-app.use(cors())
 mongoose.connect(mongoUrl)
     .then(
         app.listen(PORT, () => {console.log(`App is live on port ${PORT}`)}),
