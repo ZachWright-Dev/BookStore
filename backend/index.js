@@ -56,4 +56,15 @@ app.get('/books/:id', async(req, res, next) => {
         next(e)
     }
 })
+
+app.put('/books/:id', validateBook, async(req,res,next) => {
+    const { id } = req.params
+    const { title, author, publishYear } = req.body
+    try{
+        const book = await Book.findByIdAndUpdate(id,{title, author, publishYear}, {new: true} )
+        return res.status(200).json(book)
+    } catch(e){
+        next(e)
+    }
+})
     
