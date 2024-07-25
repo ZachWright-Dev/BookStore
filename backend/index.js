@@ -1,9 +1,16 @@
+import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
 import { PORT, mongoUrl } from './config.js';
+import { errorHandler } from './errorHandler.js';
+import booksRouter from './routes/bookRoutes.js';
 
 //Initialize app
 const app = express()
+app.use(cors())
+app.use(express.json())
+app.use('/books', booksRouter)
+app.use(errorHandler)
 mongoose.connect(mongoUrl)
     .then(
         app.listen(PORT, () => {console.log(`App is live on port ${PORT}`)}),
@@ -12,4 +19,3 @@ mongoose.connect(mongoUrl)
     .catch(() => {
         console.log("Error occured connecting to database!")
     })
-    
