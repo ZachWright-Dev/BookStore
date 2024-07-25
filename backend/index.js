@@ -32,4 +32,28 @@ app.post('/books', validateBook, async (req, res, next) => {
     }
 })
 
+//Get all books from db
+app.get('/books', async(req, res, next) => {
+    try{
+        const books = await Book.find({})
+        return res.status(200).json({
+            count: books.length,
+            data:books
+        })
+    } catch(e) {
+        next(e)
+    }
+})
+
+
+//Get book by id
+app.get('/books/:id', async(req, res, next) => {
+    const { id } = req.params
+    try{
+        const book = await Book.findById(id)
+        return res.status(200).json(book)
+    } catch(e){
+        next(e)
+    }
+})
     
